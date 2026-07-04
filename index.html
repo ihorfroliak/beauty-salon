@@ -279,6 +279,8 @@
             Номер телефону
             <input type="tel" name="phone" placeholder="+38 (0__) ___-__-__" required />
           </label>
+          <!-- honeypot: приховане поле-пастка для спам-ботів -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
           <button type="submit" class="btn btn-call btn-block">Замовити дзвінок</button>
           <p class="form-hint" id="form-hint" role="status"></p>
         </form>
