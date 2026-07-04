@@ -3,6 +3,53 @@
 // Поточний рік у футері
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// Мобільне меню (гамбургер)
+const header = document.querySelector('.site-header');
+const burger = document.getElementById('burger');
+const nav = document.getElementById('nav');
+if (burger && header && nav) {
+  const closeNav = () => {
+    header.classList.remove('nav-open');
+    burger.setAttribute('aria-expanded', 'false');
+  };
+  burger.addEventListener('click', () => {
+    const open = header.classList.toggle('nav-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeNav));
+}
+
+// Тінь у шапки після скролу
+if (header) {
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 12);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+// Плавна поява секцій при прокручуванні
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!reduceMotion && 'IntersectionObserver' in window) {
+  const targets = document.querySelectorAll(
+    '.section-eyebrow, .section-title, .prices-note, .service-card, .adv-card, .gallery-item, .review-card, .price-block, .about-text, .about-badge, .contacts-card, .services-cta'
+  );
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  targets.forEach((el, i) => {
+    el.classList.add('reveal');
+    // невеликий каскад для сусідніх елементів
+    const delay = (i % 4) * 80;
+    el.style.transitionDelay = delay + 'ms';
+    io.observe(el);
+  });
+}
+
 // Форма замовлення дзвінка → надсилає заявку в Telegram через /api/callback
 const form = document.getElementById('callback-form');
 const hint = document.getElementById('form-hint');

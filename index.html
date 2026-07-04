@@ -12,6 +12,8 @@
   <meta property="og:description" content="Стрижки, фарбування, манікюр і педикюр від майстрів високого рівня. Запис по телефону." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="uk_UA" />
+  <meta name="theme-color" content="#b06f5d" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,15 +28,21 @@
         <span class="logo-mark">С</span>
         <span class="logo-text">Світлана<small>салон краси · Київ</small></span>
       </a>
-      <nav class="nav" aria-label="Головна навігація">
+      <nav class="nav" id="nav" aria-label="Головна навігація">
         <a href="#services">Послуги</a>
+        <a href="#advantages">Переваги</a>
         <a href="#about">Про нас</a>
+        <a href="#gallery">Роботи</a>
         <a href="#prices">Ціни</a>
         <a href="#contacts">Контакти</a>
+        <a href="tel:+380993653335" class="nav-call">📞 Зателефонувати</a>
       </nav>
-      <a href="tel:+380000000000" class="btn btn-call header-call">
+      <a href="tel:+380993653335" class="btn btn-call header-call">
         <span class="phone-ico" aria-hidden="true">📞</span> Зателефонувати
       </a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -48,12 +56,56 @@
         Запишіться на візит просто зараз — один дзвінок, і зручний час ваш.
       </p>
       <div class="hero-actions">
-        <a href="tel:+380000000000" class="btn btn-call btn-lg">
+        <a href="tel:+380993653335" class="btn btn-call btn-lg">
           <span class="phone-ico" aria-hidden="true">📞</span> Записатися по телефону
         </a>
         <a href="#services" class="btn btn-ghost btn-lg">Переглянути послуги</a>
       </div>
+      <div class="hero-trust">
+        <div class="hero-stars" aria-hidden="true">★★★★★</div>
+        <span>4.9 / 5 · понад 800 відгуків клієнтів</span>
+      </div>
       <p class="hero-hours">Пн–Нд · 09:00–21:00 · без вихідних</p>
+    </div>
+  </section>
+
+  <!-- ================= ADVANTAGES ================= -->
+  <section class="section section-alt" id="advantages">
+    <div class="container">
+      <p class="section-eyebrow">Чому обирають нас</p>
+      <h2 class="section-title">Наші переваги</h2>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <div class="adv-ico">🏆</div>
+          <h3>Досвідчені майстри</h3>
+          <p>Сертифіковані фахівці, які регулярно проходять навчання та стажування.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico">🧴</div>
+          <h3>Професійна косметика</h3>
+          <p>Працюємо лише з перевіреними брендами преміум-класу.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico">🧼</div>
+          <h3>Стерильність</h3>
+          <p>Індивідуальні набори інструментів та ретельна дезінфекція.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico">⏱️</div>
+          <h3>Цінуємо ваш час</h3>
+          <p>Працюємо за записом — без черг і зайвого очікування.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico">💛</div>
+          <h3>Затишна атмосфера</h3>
+          <p>Кава, приємна музика та турбота від першої хвилини візиту.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico">💳</div>
+          <h3>Зручна оплата</h3>
+          <p>Готівка та картки. Діють бонуси для постійних клієнтів.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -155,7 +207,7 @@
 
       <div class="services-cta">
         <p>Не знайшли потрібну послугу? Зателефонуйте — ми підкажемо та підберемо майстра.</p>
-        <a href="tel:+380000000000" class="btn btn-call">
+        <a href="tel:+380993653335" class="btn btn-call">
           <span class="phone-ico" aria-hidden="true">📞</span> Зателефонувати
         </a>
       </div>
@@ -192,8 +244,25 @@
     </div>
   </section>
 
+  <!-- ================= GALLERY ================= -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <p class="section-eyebrow">Портфоліо</p>
+      <h2 class="section-title">Наші роботи</h2>
+      <p class="prices-note">Кілька прикладів того, що ми робимо щодня. Замініть плейсхолдери справжніми фото ваших робіт.</p>
+      <div class="gallery-grid">
+        <figure class="gallery-item g1"><figcaption>Фарбування · балаяж</figcaption></figure>
+        <figure class="gallery-item g2"><figcaption>Жіноча стрижка</figcaption></figure>
+        <figure class="gallery-item g3"><figcaption>Манікюр · нейл-арт</figcaption></figure>
+        <figure class="gallery-item g4"><figcaption>Вечірня зачіска</figcaption></figure>
+        <figure class="gallery-item g5"><figcaption>Педикюр · SPA</figcaption></figure>
+        <figure class="gallery-item g6"><figcaption>Макіяж</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= PRICES ================= -->
-  <section class="section" id="prices">
+  <section class="section section-alt" id="prices">
     <div class="container">
       <p class="section-eyebrow">Орієнтовний прайс</p>
       <h2 class="section-title">Ціни</h2>
@@ -240,6 +309,31 @@
     </div>
   </section>
 
+  <!-- ================= REVIEWS ================= -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <p class="section-eyebrow">Відгуки</p>
+      <h2 class="section-title">Що кажуть клієнти</h2>
+      <div class="reviews-grid">
+        <figure class="review-card">
+          <div class="review-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>Найкращий салон, у якому була. Майстер підібрала ідеальний колір, вийшла щаслива. Дуже уважне ставлення!</blockquote>
+          <figcaption><span class="review-ava">О</span> Олена К.</figcaption>
+        </figure>
+        <figure class="review-card">
+          <div class="review-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>Роблю манікюр лише тут. Чисто, стерильно, тримається бездоганно. Приємні ціни й затишна атмосфера.</blockquote>
+          <figcaption><span class="review-ava">М</span> Марія Т.</figcaption>
+        </figure>
+        <figure class="review-card">
+          <div class="review-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>Стрижуся всією сім'єю. Записатися легко — один дзвінок, і завжди знаходять зручний час. Рекомендую!</blockquote>
+          <figcaption><span class="review-ava">А</span> Андрій П.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= CONTACTS ================= -->
   <section class="section section-dark" id="contacts">
     <div class="container contacts-inner">
@@ -251,7 +345,7 @@
           і потрібного майстра.
         </p>
 
-        <a href="tel:+380000000000" class="phone-big">+38 (0XX) XXX-XX-XX</a>
+        <a href="tel:+380993653335" class="phone-big">+38 (099) 365-33-35</a>
 
         <ul class="contact-list">
           <li><span>📍</span> м. Київ, вул. Прикладна, 1</li>
@@ -262,7 +356,7 @@
         <div class="socials">
           <a href="#" aria-label="Instagram">Instagram</a>
           <a href="#" aria-label="Facebook">Facebook</a>
-          <a href="viber://chat?number=%2B380000000000" aria-label="Viber">Viber</a>
+          <a href="viber://chat?number=%2B380993653335" aria-label="Viber">Viber</a>
           <a href="https://t.me/" aria-label="Telegram">Telegram</a>
         </div>
       </div>
@@ -297,7 +391,7 @@
   </footer>
 
   <!-- Sticky mobile call button -->
-  <a href="tel:+380000000000" class="sticky-call" aria-label="Зателефонувати">
+  <a href="tel:+380993653335" class="sticky-call" aria-label="Зателефонувати">
     <span class="phone-ico" aria-hidden="true">📞</span> Подзвонити
   </a>
 
