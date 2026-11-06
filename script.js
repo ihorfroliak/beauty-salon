@@ -35,8 +35,14 @@ if (!reduceMotion && 'IntersectionObserver' in window) {
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('reveal-in');
-        obs.unobserve(entry.target);
+        const el = entry.target;
+        el.classList.add('reveal-in');
+        // Після появи прибираємо класи, інакше вони глушать hover-ефекти карток
+        el.addEventListener('transitionend', () => {
+          el.classList.remove('reveal', 'reveal-in');
+          el.style.transitionDelay = '';
+        }, { once: true });
+        obs.unobserve(el);
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
@@ -50,20 +56,91 @@ if (!reduceMotion && 'IntersectionObserver' in window) {
   });
 }
 
+// Години роботи (за київським часом). Мають збігатися з текстом і JSON-LD в index.html
+const OPEN_HOUR = 9;
+const CLOSE_HOUR = 21;
+const kyivHourFormat = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Kyiv', hour: 'numeric', hourCycle: 'h23' });
+const isOpenNow = () => {
+  const hour = Number(kyivHourFormat.format(new Date()));
+  return hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+};
+
+// Статус «відчинено/зачинено»: поза робочим часом ведемо до форми, а не до дзвінка без відповіді
+const statusEl = document.getElementById('open-status');
+const leadEl = document.getElementById('callback-lead');
+const defaultLead = leadEl ? leadEl.textContent : '';
+function renderOpenStatus() {
+  const open = isOpenNow();
+  document.body.classList.toggle('is-closed', !open);
+  if (statusEl) {
+    statusEl.innerHTML = open
+      ? '<span class="status-dot" aria-hidden="true"></span>Зараз відчинено · до 21:00, без вихідних'
+      : '<span class="status-dot" aria-hidden="true"></span>Зараз зачинено · працюємо з 09:00 · <a href="#callback">замовте дзвінок</a>';
+  }
+  if (leadEl) {
+    leadEl.textContent = open ? defaultLead : 'Зараз ми зачинені. Залиште номер — передзвонимо після 09:00.';
+  }
+}
+renderOpenStatus();
+setInterval(renderOpenStatus, 60000);
+
+// Десктоп: tel: часто нікуди не веде, тому копіюємо номер і показуємо його
+const phoneLink = document.querySelector('.phone-big');
+const phoneText = phoneLink.textContent.trim();
+const phoneHref = phoneLink.getAttribute('href');
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(message) {
+  toast.textContent = message;
+  toast.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.hidden = true; }, 5000);
+}
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.addEventListener('click', async (e) => {
+    if (!e.target.closest('a[href^="tel:"]')) return;
+    try {
+      await navigator.clipboard.writeText(phoneText);
+      showToast(`Номер скопійовано: ${phoneText}`);
+    } catch {
+      showToast(`Наш номер: ${phoneText}`);
+    }
+  });
+}
+
 // Форма замовлення дзвінка → надсилає заявку в Telegram через /api/callback
 const form = document.getElementById('callback-form');
 const hint = document.getElementById('form-hint');
+
+// «Передзвоніть мені» з картки: підставляємо послугу у форму
+document.querySelectorAll('[data-service]').forEach((link) => {
+  link.addEventListener('click', () => {
+    form.service.value = link.dataset.service;
+    form.name.focus({ preventScroll: true });
+  });
+});
+
+// Заявка не має загубитися: при помилці одразу даємо номер для дзвінка
+function showFormError(message) {
+  const call = document.createElement('a');
+  call.href = phoneHref;
+  call.textContent = phoneText;
+  hint.textContent = `${message} `;
+  hint.append(call);
+  hint.className = 'form-hint err';
+}
 
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = form.name.value.trim();
     const phone = form.phone.value.trim();
+    const service = form.service.value;
     const website = form.website ? form.website.value : ''; // honeypot
 
-    // Проста валідація номера: щонайменше 9 цифр
-    const digits = phone.replace(/\D/g, '');
-    if (!name || digits.length < 9) {
+    // Ті самі формати номера, що приймає api/callback.js
+    const digits = phone.replace(/\D/g, '').replace(/^00/, '');
+    if (!name || !/^(\d{9}|0\d{9}|\d{11,15})$/.test(digits)) {
       hint.textContent = 'Будь ласка, вкажіть ім\'я та коректний номер телефону.';
       hint.className = 'form-hint err';
       return;
@@ -78,21 +155,22 @@ if (form) {
       const res = await fetch('/api/callback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, website }),
+        body: JSON.stringify({ name, phone, service, website }),
+        signal: AbortSignal.timeout(10000),
       });
       const data = await res.json().catch(() => ({}));
 
       if (res.ok && data.ok) {
-        hint.textContent = `Дякуємо, ${name}! Ми передзвонимо найближчим часом.`;
+        hint.textContent = isOpenNow()
+          ? `Дякуємо, ${name}! Передзвонимо протягом 15 хвилин.`
+          : `Дякуємо, ${name}! Передзвонимо після 09:00.`;
         hint.className = 'form-hint ok';
         form.reset();
       } else {
-        hint.textContent = 'Не вдалося надіслати заявку. Зателефонуйте нам, будь ласка.';
-        hint.className = 'form-hint err';
+        showFormError('Не вдалося надіслати заявку. Зателефонуйте нам:');
       }
     } catch {
-      hint.textContent = 'Проблема зі з\'єднанням. Зателефонуйте нам, будь ласка.';
-      hint.className = 'form-hint err';
+      showFormError('Проблема зі з\'єднанням. Зателефонуйте нам:');
     } finally {
       btn.disabled = false;
     }

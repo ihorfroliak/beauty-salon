@@ -15,6 +15,22 @@
   <meta name="theme-color" content="#b06f5d" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BeautySalon",
+    "name": "Салон краси «Світлана»",
+    "telephone": "+380993653335",
+    "address": { "@type": "PostalAddress", "addressLocality": "Київ", "addressCountry": "UA" },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "09:00",
+      "closes": "21:00"
+    }
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -38,7 +54,7 @@
         <a href="tel:+380993653335" class="nav-call">📞 Зателефонувати</a>
       </nav>
       <a href="tel:+380993653335" class="btn btn-call header-call">
-        <span class="phone-ico" aria-hidden="true">📞</span> Зателефонувати
+        <span class="phone-ico" aria-hidden="true">📞</span> +38 (099) 365-33-35
       </a>
       <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">
         <span></span><span></span><span></span>
@@ -61,11 +77,12 @@
         </a>
         <a href="#services" class="btn btn-ghost btn-lg">Переглянути послуги</a>
       </div>
+      <a href="tel:+380993653335" class="hero-phone">+38 (099) 365-33-35</a>
       <div class="hero-trust">
         <div class="hero-stars" aria-hidden="true">★★★★★</div>
         <span>4.9 / 5 · понад 800 відгуків клієнтів</span>
       </div>
-      <p class="hero-hours">Пн–Нд · 09:00–21:00 · без вихідних</p>
+      <p class="hero-hours" id="open-status">Пн–Нд · 09:00–21:00 · без вихідних</p>
     </div>
   </section>
 
@@ -125,6 +142,10 @@
             <li>Дитяча стрижка</li>
             <li>Укладка та вечірні зачіски</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на перукарські послуги — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Перукарські послуги">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -136,6 +157,10 @@
             <li>Тонування та корекція кольору</li>
             <li>Складне колорування</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на фарбування волосся — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Фарбування волосся">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -147,6 +172,10 @@
             <li>Живильні маски та SPA-догляд</li>
             <li>Ламінування</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на догляд за волоссям — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Догляд за волоссям">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -158,6 +187,10 @@
             <li>Нарощування нігтів</li>
             <li>Дизайн та нейл-арт</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на манікюр — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Манікюр">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -169,6 +202,10 @@
             <li>SPA-педикюр</li>
             <li>Покриття гель-лаком</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на педикюр — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Педикюр">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -180,6 +217,10 @@
             <li>Нарощування вій</li>
             <li>Ламінування вій</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на брови та вії — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Брови та вії">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -191,6 +232,10 @@
             <li>Весільний образ</li>
             <li>Індивідуальні уроки</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на візаж — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Візаж">Передзвоніть мені</a>
+          </div>
         </article>
 
         <article class="service-card">
@@ -202,6 +247,10 @@
             <li>Депіляція воском / шугаринг</li>
             <li>Масаж обличчя</li>
           </ul>
+          <div class="service-actions">
+            <a href="tel:+380993653335" class="btn btn-call service-call" aria-label="Записатися на косметологію — зателефонувати"><span aria-hidden="true">📞</span> Записатися</a>
+            <a href="#callback" class="service-back" data-service="Косметологія">Передзвоніть мені</a>
+          </div>
         </article>
       </div>
 
@@ -249,7 +298,7 @@
     <div class="container">
       <p class="section-eyebrow">Портфоліо</p>
       <h2 class="section-title">Наші роботи</h2>
-      <p class="prices-note">Кілька прикладів того, що ми робимо щодня. Замініть плейсхолдери справжніми фото ваших робіт.</p>
+      <p class="prices-note">Кілька прикладів того, що ми робимо щодня.</p>
       <div class="gallery-grid">
         <figure class="gallery-item g1"><figcaption>Фарбування · балаяж</figcaption></figure>
         <figure class="gallery-item g2"><figcaption>Жіноча стрижка</figcaption></figure>
@@ -306,6 +355,13 @@
           </ul>
         </div>
       </div>
+
+      <div class="services-cta">
+        <p>Назвемо точну вартість за хвилину й одразу підберемо час.</p>
+        <a href="tel:+380993653335" class="btn btn-call">
+          <span class="phone-ico" aria-hidden="true">📞</span> Дізнатися ціну й записатися
+        </a>
+      </div>
     </div>
   </section>
 
@@ -354,24 +410,36 @@
         </ul>
 
         <div class="socials">
-          <a href="#" aria-label="Instagram">Instagram</a>
-          <a href="#" aria-label="Facebook">Facebook</a>
-          <a href="viber://chat?number=%2B380993653335" aria-label="Viber">Viber</a>
-          <a href="https://t.me/" aria-label="Telegram">Telegram</a>
+          <!-- TODO: додати Instagram, Facebook і Telegram, коли будуть реальні посилання -->
+          <a href="viber://chat?number=%2B380993653335" aria-label="Написати у Viber">Написати у Viber</a>
         </div>
       </div>
 
-      <div class="contacts-card">
+      <div class="contacts-card" id="callback">
         <h3>Зручно замовити дзвінок?</h3>
-        <p>Залиште номер — і ми передзвонимо протягом 15 хвилин у робочий час.</p>
+        <p id="callback-lead">Залиште номер — і ми передзвонимо протягом 15 хвилин у робочий час.</p>
         <form id="callback-form" novalidate>
           <label>
             Ваше ім'я
-            <input type="text" name="name" placeholder="Наприклад, Олена" required />
+            <input type="text" name="name" placeholder="Наприклад, Олена" autocomplete="given-name" required />
           </label>
           <label>
             Номер телефону
-            <input type="tel" name="phone" placeholder="+38 (0__) ___-__-__" required />
+            <input type="tel" name="phone" placeholder="+38 (0__) ___-__-__" inputmode="tel" autocomplete="tel" required />
+          </label>
+          <label>
+            Послуга (необов'язково)
+            <select name="service">
+              <option value="">Підкажіть, будь ласка</option>
+              <option>Перукарські послуги</option>
+              <option>Фарбування волосся</option>
+              <option>Догляд за волоссям</option>
+              <option>Манікюр</option>
+              <option>Педикюр</option>
+              <option>Брови та вії</option>
+              <option>Візаж</option>
+              <option>Косметологія</option>
+            </select>
           </label>
           <!-- honeypot: приховане поле-пастка для спам-ботів -->
           <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
@@ -390,10 +458,15 @@
     </div>
   </footer>
 
-  <!-- Sticky mobile call button -->
-  <a href="tel:+380993653335" class="sticky-call" aria-label="Зателефонувати">
-    <span class="phone-ico" aria-hidden="true">📞</span> Подзвонити
-  </a>
+  <!-- Sticky mobile call bar -->
+  <div class="sticky-bar">
+    <a href="tel:+380993653335" class="sticky-tel" aria-label="Зателефонувати">
+      <span class="phone-ico" aria-hidden="true">📞</span> Подзвонити
+    </a>
+    <a href="#callback" class="sticky-back">Передзвоніть мені</a>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
 
   <script src="script.js"></script>
 </body>

@@ -26,27 +26,33 @@ export default async function handler(req, res) {
   }
   const name = String(body?.name || '').trim().slice(0, 100);
   const phone = String(body?.phone || '').trim().slice(0, 40);
+  const service = String(body?.service || '').trim().slice(0, 60);
   const website = String(body?.website || '').trim(); // honeypot-поле проти ботів
 
   // Якщо приховане поле заповнене — це спам-бот. Вдаємо успіх і нічого не робимо.
   if (website) return res.status(200).json({ ok: true });
 
-  const digits = phone.replace(/\D/g, '');
-  if (!name || digits.length < 9) {
+  const normalizedPhone = normalizePhone(phone);
+  if (!name || !normalizedPhone) {
     return res.status(400).json({ ok: false, error: 'Некоректні дані' });
   }
 
-  const text =
-    `💇 *Нова заявка на дзвінок*\n\n` +
-    `👤 Ім'я: ${escapeMd(name)}\n` +
-    `📞 Телефон: ${escapeMd(phone)}\n` +
-    `🕘 ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' })}`;
+  // Звичайний текст без parse_mode: дані клієнта не ламають розмітку,
+  // а номер у форматі +380… Telegram робить клікабельним для дзвінка.
+  const text = [
+    '💇 Нова заявка на дзвінок',
+    '',
+    `👤 Ім'я: ${name}`,
+    `📞 Телефон: ${normalizedPhone}`,
+    `💅 Послуга: ${service || 'не вказано'}`,
+    `🕘 ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' })}`,
+  ].join('\n');
 
   try {
     const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' }),
+      body: JSON.stringify({ chat_id: chatId, text }),
     });
     const data = await tgRes.json();
     if (!data.ok) {
@@ -60,7 +66,13 @@ export default async function handler(req, res) {
   }
 }
 
-// Екранування спецсимволів Markdown, щоб ім'я/телефон не ламали розмітку
-function escapeMd(s) {
-  return s.replace(/([_*`\[\]])/g, '\\$1');
+// Приводить номер до міжнародного формату. Повертає null, якщо номер некоректний.
+// Приймає: 991234567, 0991234567, 80991234567, 380991234567, 00380991234567, іноземні 11–15 цифр.
+function normalizePhone(raw) {
+  const digits = raw.replace(/\D/g, '').replace(/^00/, '');
+  if (/^\d{9}$/.test(digits)) return `+380${digits}`;
+  if (/^0\d{9}$/.test(digits)) return `+38${digits}`;
+  if (/^80\d{9}$/.test(digits)) return `+3${digits}`;
+  if (/^\d{11,15}$/.test(digits)) return `+${digits}`;
+  return null;
 }
