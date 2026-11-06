@@ -306,6 +306,7 @@ body {
 }
 .contacts-card input:focus,
 .contacts-card select:focus { outline: none; border-color: var(--rose); }
+.contacts-card input[aria-invalid="true"] { border-color: var(--rose-deep); }
 .form-hint a { color: inherit; font-weight: 600; white-space: nowrap; }
 .form-hint { font-size: 0.85rem; margin-top: 0.8rem; min-height: 1.1em; }
 .form-hint.ok { color: #2e8b57; }

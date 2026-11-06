@@ -69,9 +69,16 @@ const isOpenNow = () => {
 const statusEl = document.getElementById('open-status');
 const leadEl = document.getElementById('callback-lead');
 const defaultLead = leadEl ? leadEl.textContent : '';
+const heroCta = document.querySelector('.hero-actions .btn-call');
+const heroCtaHtml = heroCta.innerHTML;
+const heroCtaHref = heroCta.getAttribute('href');
 function renderOpenStatus() {
   const open = isOpenNow();
   document.body.classList.toggle('is-closed', !open);
+  // Номер лишається видимим під кнопкою, тож зателефонувати можна й поза робочим часом
+  heroCta.setAttribute('href', open ? heroCtaHref : '#callback');
+  if (open) heroCta.innerHTML = heroCtaHtml;
+  else heroCta.textContent = 'Замовити дзвінок';
   if (statusEl) {
     statusEl.innerHTML = open
       ? '<span class="status-dot" aria-hidden="true"></span>Зараз відчинено · до 21:00, без вихідних'
@@ -140,9 +147,15 @@ if (form) {
 
     // Ті самі формати номера, що приймає api/callback.js
     const digits = phone.replace(/\D/g, '').replace(/^00/, '');
-    if (!name || !/^(\d{9}|0\d{9}|\d{11,15})$/.test(digits)) {
-      hint.textContent = 'Будь ласка, вкажіть ім\'я та коректний номер телефону.';
+    const phoneValid = /^(\d{9}|0\d{9}|\d{11,15})$/.test(digits);
+    form.name.setAttribute('aria-invalid', String(!name));
+    form.phone.setAttribute('aria-invalid', String(!phoneValid));
+    if (!name || !phoneValid) {
+      hint.textContent = !name
+        ? 'Вкажіть, будь ласка, ваше ім\'я.'
+        : 'Перевірте номер. Наприклад: 099 123 45 67.';
       hint.className = 'form-hint err';
+      (!name ? form.name : form.phone).focus();
       return;
     }
 
