@@ -31,6 +31,8 @@ export default async function handler(req, res) {
 
   // Якщо приховане поле заповнене — це спам-бот. Вдаємо успіх і нічого не робимо.
   if (website) return res.status(200).json({ ok: true });
+  // Посилання в імені — типовий спам. Реальній людині воно не потрібне.
+  if (/https?:|www\.|t\.me\//i.test(name)) return res.status(200).json({ ok: true });
 
   const normalizedPhone = normalizePhone(phone);
   if (!name || !normalizedPhone) {
@@ -53,6 +55,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text }),
+      signal: AbortSignal.timeout(8000), // менше за 10 с очікування у браузері
     });
     const data = await tgRes.json();
     if (!data.ok) {

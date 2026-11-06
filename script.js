@@ -119,12 +119,24 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
 const form = document.getElementById('callback-form');
 const hint = document.getElementById('form-hint');
 
-// «Передзвоніть мені» з картки: підставляємо послугу у форму
-document.querySelectorAll('[data-service]').forEach((link) => {
-  link.addEventListener('click', () => {
-    form.service.value = link.dataset.service;
-    form.name.focus({ preventScroll: true });
-  });
+// Будь-яке посилання на форму ставить курсор у перше поле, а з картки ще й підставляє послугу
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href="#callback"]');
+  if (!link) return;
+  if (link.dataset.service) form.service.value = link.dataset.service;
+  form.name.focus({ preventScroll: true });
+});
+
+// Події для аналітики. Без підключеного GA4/GTM просто лежать у dataLayer і нікуди не йдуть.
+function track(event, data) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event, ...data });
+}
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href^="tel:"], a[href="#callback"]');
+  if (!link) return;
+  const place = link.closest('.sticky-bar') ? 'sticky' : (link.closest('section[id], header[id]') || {}).id;
+  track(link.getAttribute('href') === '#callback' ? 'callback_open' : 'call_click', { place });
 });
 
 // Заявка не має загубитися: при помилці одразу даємо номер для дзвінка
@@ -178,6 +190,7 @@ if (form) {
           ? `Дякуємо, ${name}! Передзвонимо протягом 15 хвилин.`
           : `Дякуємо, ${name}! Передзвонимо після 09:00.`;
         hint.className = 'form-hint ok';
+        track('callback_submit', { service: service || 'none' }); // без імені й телефону
         form.reset();
       } else {
         showFormError('Не вдалося надіслати заявку. Зателефонуйте нам:');

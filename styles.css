@@ -8,10 +8,10 @@
   --bg-alt: #f4ece6;
   --dark: #2b2320;
   --text: #3d3530;
-  --muted: #857a72;
+  --muted: #6b615a;
   --rose: #c98b7a;
-  --rose-deep: #b06f5d;
-  --call-deep: #8f5445;
+  --rose-deep: #9a5b4a;
+  --call-deep: #7f4a3c;
   --open: #2e8b57;
   --gold: #c9a25f;
   --white: #ffffff;
@@ -31,7 +31,7 @@ body {
   color: var(--text);
   background: var(--bg);
   line-height: 1.65;
-  font-weight: 300;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -476,7 +476,41 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--call-deep); out
   margin-top: 1.3rem;
 }
 .service-call { padding: 0.65rem 1.2rem; font-size: 0.9rem; }
-.service-back { font-size: 0.85rem; color: var(--rose-deep); font-weight: 400; }
+.service-back { font-size: 0.85rem; color: var(--call-deep); }
+
+/* Вночі дзвінок не приймуть: головною стає заявка, а кнопка дзвінка відступає */
+.is-closed .service-actions { flex-direction: row-reverse; justify-content: flex-end; }
+.is-closed .service-back {
+  padding: 0.65rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--rose-deep), var(--call-deep));
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.is-closed .service-call {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--call-deep);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--dark);
+  color: var(--white);
+}
+.skip-link:focus { top: 12px; }
 
 /* Поза робочим часом головна дія — передзвін */
 .sticky-bar {
@@ -559,6 +593,7 @@ body:has(.contacts-card :focus) .sticky-bar { display: none; }
   .about-badge { order: -1; }
   .badge-circle { width: 190px; height: 190px; }
   .sticky-bar { display: grid; }
+  .toast { bottom: 76px; }
   body { padding-bottom: 78px; }
 }
 

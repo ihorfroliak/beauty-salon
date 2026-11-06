@@ -74,6 +74,19 @@ test('silently ignores honeypot submissions', async () => {
   assert.equal(sent.length, 0);
 });
 
+test('silently ignores links in the name', async () => {
+  const { status } = await post({ name: 'Buy https://spam.example', phone: '0993653335' });
+  assert.equal(status, 200);
+  assert.equal(sent.length, 0);
+});
+
+test('reports a network failure', async () => {
+  globalThis.fetch = async () => { throw new Error('timeout'); };
+  const { status, data } = await post({ name: 'Олена', phone: '0993653335' });
+  assert.equal(status, 502);
+  assert.equal(data.ok, false);
+});
+
 test('accepts a JSON string body', async () => {
   const { status } = await post(JSON.stringify({ name: 'Олена', phone: '0993653335' }));
   assert.equal(status, 200);
